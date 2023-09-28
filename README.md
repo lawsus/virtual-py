@@ -38,6 +38,9 @@
     ```env
     DISCORD_TOKEN=YOUR_DISCORD_TOKEN
     ```
+4. Ensure message content privileged intent is enabled ([info](https://discordpy.readthedocs.io/en/stable/ext/commands/commands.html)):
+    - Go to [developer portal](https://discord.com/developers/applications).
+    - Enable message content in the Privileged Gateway Intents section of the Bot page.
 
 ### Running the Bot
 
@@ -47,7 +50,7 @@
     python bot/main.py
     ```
 
-2. Invite the bot to your Discord server and start using it!
+2. Invite the bot to your Discord server and start using it !
 
 ## Usage
 
