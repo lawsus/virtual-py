@@ -17,7 +17,7 @@ DISCORD_TOKEN = os.getenv("DISCORD_TOKEN")
 # initialize bot
 intents = discord.Intents.default()
 intents.message_content = True
-bot = commands.Bot(command_prefix="!p3 ", intents=intents)
+bot = commands.Bot(command_prefix="vp ", intents=intents)
 
 # initialize file system manager
 file_system_manager = FileSystemManager()
