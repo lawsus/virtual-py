@@ -1,5 +1,7 @@
 import os
 import subprocess
+import uuid
+from code_validator import validate_code
 
 
 class FileSystemManager:
@@ -48,20 +50,32 @@ class FileSystemManager:
         if code == "File not found":
             return code
 
-        with open(f"temp_{user_id}_{file_name}", "w") as temp_file:
+        # validate code
+        is_valid, validation_message = validate_code(code)
+        if not is_valid:
+            return validation_message
+
+        # unique id so multiple users can run files with the same name
+        temp_file_name = f"temp_{user_id}_{file_name}_{uuid.uuid4()}"
+        with open(temp_file_name, "w") as temp_file:
             temp_file.write(code)
 
+        # shell is left as False for security
         try:
             output = subprocess.check_output(
-                ["python3", f"temp_{user_id}_{file_name}"],
+                ["python3", temp_file_name],
                 stderr=subprocess.STDOUT,
                 text=True,
+                timeout=5,
             )
-            os.remove(f"temp_{user_id}_{file_name}")
+            os.remove(temp_file_name)
             return output
         except subprocess.CalledProcessError as e:
-            os.remove(f"temp_{user_id}_{file_name}")
+            os.remove(temp_file_name)
             return e.output
+        except subprocess.TimeoutExpired:
+            os.remove(temp_file_name)
+            return "Execution timed out"
 
     def list_directories(self, user_id):
         # navigate to current directory using current path

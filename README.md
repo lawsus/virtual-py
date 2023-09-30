@@ -39,7 +39,7 @@
     DISCORD_TOKEN=YOUR_DISCORD_TOKEN
     ```
 4. Ensure message content privileged intent is enabled ([info](https://discordpy.readthedocs.io/en/stable/ext/commands/commands.html)):
-    - Go to [developer portal](https://discord.com/developers/applications).
+    - Go to the [developer portal](https://discord.com/developers/applications).
     - Enable message content in the Privileged Gateway Intents section of the Bot page.
 
 ### Running the Bot
@@ -95,12 +95,14 @@
 
 ## Safety Precautions
 
-Virtual Py executes Python code, which can be dangerous if not handled properly. It's crucial to implement safety measures to prevent the execution of malicious code.
+Virtual Py executes Python code, which can be dangerous if not handled properly. To mitigate the dangers, various safety measures have been implemented. These include rating limiting on commands, timeouts on code execution, and checks for forbidden imports and built-in commands within the code. Despite these precautions, it's important to use Virtual Py cautiously as these aren't guarantees.
 
-**To implement**:
-- Rate limiting.
-- Timeout for script execution.
-- Restricted access to sensitive Python modules.
+## Future / TODO
+- change to a whitelist over a blacklist for imports
+- improve efficiency of code_validator
+- conduct more tests to identify security vulnerabilities
+- change from an in-memory file system to a database
+- replace the subprocess implementation with a sandbox mechanism
 
 ## Contributing
 

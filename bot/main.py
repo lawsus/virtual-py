@@ -29,12 +29,13 @@ async def on_ready():
 
 
 @bot.command()
+@commands.cooldown(5, 10, commands.BucketType.user)
 async def echo(ctx, arg):
-    print("Echo command received")
     await ctx.send(arg)
 
 
 @bot.command()
+@commands.cooldown(5, 10, commands.BucketType.user)
 async def write(ctx, file_name: str, *, code: str):
     # clean up string
     code = code.replace("```python", "").replace("```", "").strip()
@@ -47,6 +48,7 @@ async def write(ctx, file_name: str, *, code: str):
 
 
 @bot.command()
+@commands.cooldown(5, 10, commands.BucketType.user)
 async def read(ctx, file_name: str):
     # read file
     user_id = ctx.message.author.id
@@ -56,6 +58,7 @@ async def read(ctx, file_name: str):
 
 
 @bot.command()
+@commands.cooldown(3, 10, commands.BucketType.user)
 async def run(ctx, file_name: str):
     # run file
     user_id = ctx.message.author.id
@@ -65,6 +68,7 @@ async def run(ctx, file_name: str):
 
 
 @bot.command()
+@commands.cooldown(5, 10, commands.BucketType.user)
 async def ls(ctx):
     # list directories
     user_id = ctx.message.author.id
@@ -74,6 +78,7 @@ async def ls(ctx):
 
 
 @bot.command()
+@commands.cooldown(5, 10, commands.BucketType.user)
 async def mkdir(ctx, dir_name: str):
     # make directories
     user_id = ctx.message.author.id
@@ -83,12 +88,61 @@ async def mkdir(ctx, dir_name: str):
 
 
 @bot.command()
+@commands.cooldown(5, 10, commands.BucketType.user)
 async def cd(ctx, path: str):
     # change directories
     user_id = ctx.message.author.id
     output = file_system_manager.change_directory(user_id, path)
 
     await ctx.send(f"{output}")
+
+
+@echo.error
+async def echo_error(ctx, error):
+    if isinstance(error, commands.CommandOnCooldown):
+        await ctx.send(
+            f"This command is on cooldown, please retry in {error.retry_after:.2f}s."
+        )
+
+
+@write.error
+async def write_error(ctx, error):
+    if isinstance(error, commands.CommandOnCooldown):
+        await ctx.send(
+            f"This command is on cooldown, please retry in {error.retry_after:.2f}s."
+        )
+
+
+@read.error
+async def read_error(ctx, error):
+    if isinstance(error, commands.CommandOnCooldown):
+        await ctx.send(
+            f"This command is on cooldown, please retry in {error.retry_after:.2f}s."
+        )
+
+
+@run.error
+async def run_error(ctx, error):
+    if isinstance(error, commands.CommandOnCooldown):
+        await ctx.send(
+            f"This command is on cooldown, please retry in {error.retry_after:.2f}s."
+        )
+
+
+@mkdir.error
+async def mkdir_error(ctx, error):
+    if isinstance(error, commands.CommandOnCooldown):
+        await ctx.send(
+            f"This command is on cooldown, please retry in {error.retry_after:.2f}s."
+        )
+
+
+@cd.error
+async def cd_error(ctx, error):
+    if isinstance(error, commands.CommandOnCooldown):
+        await ctx.send(
+            f"This command is on cooldown, please retry in {error.retry_after:.2f}s."
+        )
 
 
 bot.run(DISCORD_TOKEN)
